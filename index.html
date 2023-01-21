@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search for GIF</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="p-10">
+    <h1>Translate your words into GIFs</h1>
+    <form action="#">
+        <input class="my-4 border" type="search" name="s" id="s" placeholder="Search a perfect GIF">
+        <button type="submit">Search</button>
+    </form>
+    <small><strong>Powered By GIPHY</strong></small>
+    <img class="block" src="#">
+
+    <script>
+        const apiKey = 'hdO4maejhboOuWNkHySpFTO60vwDBRUM'; // API key for GIPHY
+        const img = document.querySelector('img');
+        const form = document.querySelector('form');
+
+        const loadGIF = (s) => {
+            fetch(`https://api.giphy.com/v1/gifs/translate?api_key=${apiKey}&s=${s}&weirdness=5`, {
+                mode: 'cors',
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (response) {
+                    console.log(response.data.images.original.url);
+                    img.src = response.data.images.original.url;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    img.src = '';
+                });
+        }
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            if (e.target.s.value) {
+                loadGIF(form.s.value);
+            }
+            form.reset();
+        });
+
+        window.addEventListener('load', _ => {
+            loadGIF('attack on titans');
+        });
+    </script>
+</body>
+
+</html>
